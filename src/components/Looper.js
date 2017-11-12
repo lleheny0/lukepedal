@@ -11,14 +11,19 @@ class Looper extends Component {
   }
 
   componentDidMount() {
-    Tone.Transport.start()
   }
 
   handlePlaybackToggle() {
+    Tone.Transport.start();
   }
 
   render() {
-    let { steps, currentStep, playing } = this.state
+    var synth = new Tone.Synth().toMaster();
+    var loop = new Tone.Loop(function(time){
+      synth.triggerAttackRelease("C3", "8n", time);
+    }, "4n");
+    loop.start("1m").stop("3m");
+    let { playing } = this.state
     return (
       <div className='looper'>
         <div className='step-counter'>

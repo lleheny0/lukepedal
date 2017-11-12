@@ -42,6 +42,7 @@ html, body {
 }
 
 .step-counter {
+  font-size: 72pt;
 }
 
 .playback-toggle {
