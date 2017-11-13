@@ -1,8 +1,8 @@
-import looper from './looper'
-import { combinReducers } from 'redux'
+import playback from './playback'
+import { combineReducers } from 'redux'
 
-const rootReducer = combinReducers({
-  looper
+const reducer = combineReducers({
+  playback
 })
 
-export default rootReducer
+export default reducer

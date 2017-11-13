@@ -1,29 +1,21 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import Tone from 'tone'
+import togglePlayback from '../actions/actions'
+
 
 class Looper extends Component {
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      playing: false
-    }
-  }
 
   componentDidMount() {
   }
 
-  handlePlaybackToggle() {
-    Tone.Transport.start();
+  togglePlayback() {
+    this.props.togglePlayback();
   }
 
   render() {
-    var synth = new Tone.Synth().toMaster();
-    var loop = new Tone.Loop(function(time){
-      synth.triggerAttackRelease("C3", "8n", time);
-    }, "4n");
-    loop.start("1m").stop("3m");
-    let { playing } = this.state
+    let { playing } = this.props
+    console.log(this.props)
     return (
       <div className='looper'>
         <div className='step-counter'>
@@ -31,7 +23,7 @@ class Looper extends Component {
         </div>
         <button
           className='playback-toggle'
-          onClick={() => this.handlePlaybackToggle()}>
+          onClick={ togglePlayback }>
           { playing ? 'Stop' : 'Play' }
         </button>
       </div>
@@ -39,10 +31,14 @@ class Looper extends Component {
   }
 }
 
-export default Looper
+function mapStateToProps(state) {
+  return {
+    playing: state.playback.playing
+  }
+}
 
-// pattern
-// current step in pattern
-// whether looper is playing
+const mapDispatchToProps = {
+  togglePlayback
+}
 
-// AudioContext > setInterval
+export default connect(mapStateToProps, mapDispatchToProps)(Looper)
