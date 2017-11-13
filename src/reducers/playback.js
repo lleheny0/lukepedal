@@ -1,13 +1,15 @@
-import TOGGLE_PLAYBACK from '../actions/actions'
+import { TOGGLE_PLAYBACK } from '../actions/actions'
 
 const initialState = {
   playing: false
 }
 
-export default function (state = initialState, action) {
+export default (state = initialState, action) => {
   if (action.type === TOGGLE_PLAYBACK) {
-    console.log(state)
-    return [...state, { playback: { playing: !state.playback.playing } }]
+    return {
+      ...state,
+      playing: !state.playing
+    }
   } else {
     return state
   }
