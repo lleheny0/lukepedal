@@ -52,8 +52,13 @@ html, body {
 }
 
 .tempo-slider {
-  width: 100%;
+  width: 400px;
   border: solid 2px blue;
+}
+
+.grid-button {
+  height: 100px;
+  width: 100px;
 }
 
 @keyframes App-logo-spin {

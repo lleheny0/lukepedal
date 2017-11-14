@@ -6,18 +6,33 @@ import { toggleNote } from '../actions/actions'
 
 class StepGrid extends Component {
 
-  // handleChange(event) {
-  //   this.setState({tempo: event.target.value});
-  // }
-
   render() {
     let { grid } = this.props
 
-    let table
+    let table = grid.map((row, rowIndex) => {
+      return (
+        <tr key={rowIndex}>
+          {
+            row.map((column, columnIndex) => {
+              return (
+                <td key={columnIndex}>
+                  <button className={column.on ? 'grid-button on' : 'grid-button off'}>
+                  </button>
+                </td>
+              )
+            })
+          }
+        </tr>
+      )
+    })
 
     return (
       <div className='grid'>
-        { table }
+        <table>
+          <tbody>
+            { table }
+          </tbody>
+        </table>
       </div>
     )
   }

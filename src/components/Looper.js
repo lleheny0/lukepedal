@@ -8,7 +8,7 @@ import StepGrid from './StepGrid'
 class Looper extends Component {
 
   handleChange(event) {
-    this.setState({tempo: event.target.value});
+    this.setState({tempo: event.target.value})
   }
 
   render() {
