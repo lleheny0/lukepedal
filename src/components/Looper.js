@@ -1,24 +1,41 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import Tone from 'tone'
-import togglePlayback from '../actions/actions'
+import { togglePlayback, adjustTempo } from '../actions/actions'
 
 
 class Looper extends Component {
 
+  handleChange(event) {
+    this.setState({tempo: event.target.value});
+  }
+
   render() {
-    let { playing, togglePlayback } = this.props
-    console.log(this.props)
+    let { playing, tempo, togglePlayback, adjustTempo } = this.props
+
     return (
       <div className='looper'>
         <div className='step-counter'>
-          {Tone.Transport.position}
+          { 'placeholder' }
+        </div>
+        <div className='tempo-slider'>
+          { 'tempo' }
+          <input
+            type='range'
+            min='60'
+            max='180'
+            value={tempo}
+            onChange={
+              (event) => {
+                adjustTempo(event.target.value)
+              }
+            }
+          />
         </div>
         <button
           className='playback-toggle'
           onClick={ () => togglePlayback() }>
-          { playing ? 'Stop' : 'Play' }
+          { playing ? '◼' : '►' }
         </button>
       </div>
     )
@@ -27,12 +44,13 @@ class Looper extends Component {
 
 function mapStateToProps(state) {
   return {
-    playing: state.playback.playing
+    playing: state.playing,
+    tempo: state.tempo
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({togglePlayback}, dispatch)
+  return bindActionCreators({togglePlayback, adjustTempo}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Looper)

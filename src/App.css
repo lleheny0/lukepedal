@@ -47,7 +47,8 @@ html, body {
 
 .playback-toggle {
   height: 400px;
-  width: 800px;
+  width: 400px;
+  font-size: 72pt;
 }
 
 @keyframes App-logo-spin {
