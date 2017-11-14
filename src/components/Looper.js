@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { togglePlayback, adjustTempo } from '../actions/actions'
+import StepGrid from './StepGrid'
 
 
 class Looper extends Component {
@@ -15,28 +16,32 @@ class Looper extends Component {
 
     return (
       <div className='looper'>
+        <div>
+          <button
+            className='playback-toggle'
+            onClick={ () => togglePlayback() }>
+            { playing ? '◼' : '►' }
+          </button>
+        </div>
         <div className='step-counter'>
           { 'placeholder' }
         </div>
-        <div className='tempo-slider'>
-          { 'tempo' }
+        <div className='tempo-info'>
+          { `tempo: ${tempo}` }
+        </div>
+        <div>
           <input
             type='range'
             min='60'
             max='180'
+            className='tempo-slider'
             value={tempo}
-            onChange={
-              (event) => {
-                adjustTempo(event.target.value)
-              }
-            }
+            onChange={ (event) => { adjustTempo(event.target.value) } }
           />
         </div>
-        <button
-          className='playback-toggle'
-          onClick={ () => togglePlayback() }>
-          { playing ? '◼' : '►' }
-        </button>
+        <div>
+          <StepGrid />
+        </div>
       </div>
     )
   }
