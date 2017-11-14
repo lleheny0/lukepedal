@@ -16,7 +16,10 @@ class StepGrid extends Component {
             row.map((column, columnIndex) => {
               return (
                 <td key={columnIndex}>
-                  <button className={column.on ? 'grid-button on' : 'grid-button off'}>
+                  <button
+                    key={`${rowIndex}-${columnIndex}`}
+                    className={column ? 'grid-button on' : 'grid-button off'}
+                    onClick={() => {}}>
                   </button>
                 </td>
               )
