@@ -24,7 +24,7 @@ class Looper extends Component {
           </button>
         </div>
         <div className='step-counter'>
-          { 'placeholder' }
+          { '☻ placeholder' }
         </div>
         <div className='tempo-info'>
           { `tempo: ${tempo}` }
