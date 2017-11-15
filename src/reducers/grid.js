@@ -4,24 +4,28 @@ import {
 
 const initialGrid = []
 
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 6; i++) {
   initialGrid[i] = []
-  for (let j = 0; j < 8; j++) {
-    let rand = Math.random() * 2
-    if (rand < 1)
-      initialGrid[i][j] = false
-    else
-      initialGrid[i][j] = true
+  for (let j = 0; j < 16; j++) {
+    initialGrid[i][j] = false
   }
 }
 
 export const gridReducer = (state = initialGrid, action) => {
   if (action.type === TOGGLE_NOTE) {
-
-    return {
-      ...state,
-      [action.location]: !state[action.location]
-    }
+    return state.map((row, rowIndex) => {
+      if (rowIndex === action.row) {
+        return row.map((column, columnIndex) => {
+          if (columnIndex === action.column) {
+            return !column
+          } else {
+            return column
+          }
+        })
+      } else {
+        return row
+      }
+    })
   } else {
     return state
   }

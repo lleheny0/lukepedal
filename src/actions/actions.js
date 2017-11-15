@@ -10,6 +10,6 @@ export const adjustTempo = (tempo) => {
   return { type: ADJUST_TEMPO, tempo }
 }
 
-export const toggleNote = (location) => {
-  return { type: TOGGLE_NOTE, location }
+export const toggleNote = (row, column) => {
+  return { type: TOGGLE_NOTE, row, column }
 }

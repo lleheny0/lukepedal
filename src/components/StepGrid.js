@@ -7,7 +7,7 @@ import { toggleNote } from '../actions/actions'
 class StepGrid extends Component {
 
   render() {
-    let { grid } = this.props
+    let { grid, toggleNote } = this.props
 
     let table = grid.map((row, rowIndex) => {
       return (
@@ -19,7 +19,7 @@ class StepGrid extends Component {
                   <button
                     key={`${rowIndex}-${columnIndex}`}
                     className={column ? 'grid-button on' : 'grid-button off'}
-                    onClick={() => {}}>
+                    onClick={ () => { toggleNote(rowIndex, columnIndex) } }>
                   </button>
                 </td>
               )
