@@ -94,16 +94,16 @@ html, body {
   cursor: pointer;
   margin: 3px;
   border-radius: 3px;
-  transform: translateY(-5px);
+  transform: translateY(-3px);
 }
 
 .grid-button.on {
-  box-shadow: 0 5px #882;
+  box-shadow: 0 3px #882;
   background-color: #cc8;
 }
 
 .grid-button.off {
-  box-shadow: 0 5px #666;
+  box-shadow: 0 3px #666;
   background-color: #aaa;
 }
 

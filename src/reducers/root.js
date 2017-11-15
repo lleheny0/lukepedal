@@ -2,11 +2,9 @@ import {
   playbackReducer,
   tempoReducer,
   loopReducer,
-  synthReducer
-} from './tone'
-import {
+  synthReducer,
   gridReducer
-} from './grid'
+} from './tone'
 import { combineReducers } from 'redux'
 
 const reducer = combineReducers({
