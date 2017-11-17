@@ -79,6 +79,9 @@ html, body {
   cursor: pointer;
 }
 
+.melody-grid-container {
+}
+
 .grid {
 }
 
@@ -87,7 +90,7 @@ html, body {
   padding: 15px;
 }
 
-.grid-button {
+.grid-button, .clear-button {
   height: 30px;
   width: 25px;
   border: none;
@@ -98,9 +101,9 @@ html, body {
 }
 
 .grid-button.on {
-  box-shadow: 0 3px #882,
-              0 3px 15px #882;
-  background-color: #cc8;
+  box-shadow: 0 3px #268,
+              0 1.5px 15px #268;
+  background-color: #8ac;
 }
 
 .grid-button.off {
@@ -108,9 +111,18 @@ html, body {
   background-color: #888;
 }
 
-.grid-button:active {
+.grid-button:active, .clear-button:active {
   transform: translateY(0px);
   box-shadow: none;
+}
+
+.clear-button {
+  font-size: 14pt;
+  padding: 0;
+  color: #844;
+  text-align: center;
+  box-shadow: 0 3px #844;
+  background-color: #c99;
 }
 
 @keyframes App-logo-spin {

@@ -1,14 +1,14 @@
 import {
   playbackReducer,
   tempoReducer,
-  gridReducer
+  melodyGridReducer
 } from './tone'
 import { combineReducers } from 'redux'
 
 const reducer = combineReducers({
   playing: playbackReducer,
   tempo: tempoReducer,
-  grid: gridReducer
+  melodyGrid: melodyGridReducer
 })
 
 export default reducer

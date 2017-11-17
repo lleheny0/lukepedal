@@ -1,15 +1,19 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { toggleNote } from '../actions/actions'
-
 
 class StepGrid extends Component {
 
   render() {
-    let { grid, toggleNote } = this.props
+    const { grid, toggleNote, className, clear } = this.props
 
-    let table = grid.map((row, rowIndex) => {
+    const clearButton = (
+      <button
+        className='clear-button'
+        onClick={ () => { clear() } }>
+        ✘
+      </button>
+    )
+
+    const table = grid.map((row, rowIndex) => {
       return (
         <tr key={rowIndex}>
           {
@@ -30,7 +34,8 @@ class StepGrid extends Component {
     })
 
     return (
-      <div className='grid'>
+      <div className={className}>
+      { clearButton }
         <table>
           <tbody>
             { table }
@@ -41,14 +46,4 @@ class StepGrid extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    grid: state.grid
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ toggleNote }, dispatch)
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(StepGrid)
+export default StepGrid

@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { togglePlayback, adjustTempo } from '../actions/actions'
+import {
+  togglePlayback,
+  adjustTempo,
+  toggleMelodyNote,
+  clearMelodyGrid
+} from '../actions/actions'
 import StepGrid from './StepGrid'
 
 
@@ -12,7 +17,15 @@ class Looper extends Component {
   }
 
   render() {
-    let { playing, tempo, togglePlayback, adjustTempo } = this.props
+    let {
+      playing,
+      tempo,
+      melodyGrid,
+      togglePlayback,
+      adjustTempo,
+      toggleMelodyNote,
+      clearMelodyGrid
+    } = this.props
 
     return (
       <div className='looper'>
@@ -39,8 +52,13 @@ class Looper extends Component {
             onChange={ (event) => { adjustTempo(event.target.value) } }
           />
         </div>
-        <div>
-          <StepGrid />
+        <div className='melody-grid-container'>
+          <StepGrid
+            grid={melodyGrid}
+            toggleNote={toggleMelodyNote}
+            className='melody-grid grid'
+            clear={clearMelodyGrid}
+          />
         </div>
       </div>
     )
@@ -50,12 +68,18 @@ class Looper extends Component {
 function mapStateToProps(state) {
   return {
     playing: state.playing,
-    tempo: state.tempo
+    tempo: state.tempo,
+    melodyGrid: state.melodyGrid,
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({togglePlayback, adjustTempo}, dispatch)
+  return bindActionCreators({
+    togglePlayback,
+    adjustTempo,
+    toggleMelodyNote,
+    clearMelodyGrid
+  }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Looper)

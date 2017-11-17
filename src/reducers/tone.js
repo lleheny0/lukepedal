@@ -1,7 +1,8 @@
 import {
   TOGGLE_PLAYBACK,
   ADJUST_TEMPO,
-  TOGGLE_NOTE
+  TOGGLE_MELODY_NOTE,
+  CLEAR_MELODY_GRID
 } from '../actions/actions'
 import Tone from 'tone'
 
@@ -11,16 +12,17 @@ Tone.Transport.loopEnd = '1m'
 Tone.Transport.start()
 
 const synths = []
+const reverb = new Tone.Freeverb(0.85).toMaster()
 for(let i = 0; i < 7; i++) {
-  synths.push(new Tone.Synth().toMaster().connect(new Tone.Freeverb(0.95).toMaster()))
+  synths.push(new Tone.Synth().toMaster().connect(reverb))
 }
 
-const initialGrid = []
+const initialMelodyGrid = []
 
 for (let i = 0; i < 7; i++) {
-  initialGrid[i] = []
+  initialMelodyGrid[i] = []
   for (let j = 0; j < 16; j++) {
-    initialGrid[i][j] = {
+    initialMelodyGrid[i][j] = {
       on: false,
       event: null
     }
@@ -60,38 +62,48 @@ export const tempoReducer = (state = 120, action) => {
   }
 }
 
-export const gridReducer = (state = initialGrid, action) => {
-  if (action.type === TOGGLE_NOTE) {
-    return state.map((row, rowIndex) => {
-      if (rowIndex === action.row) {
-        return row.map((column, columnIndex) => {
-          if (columnIndex === action.column) {
-            let event = null
-            if (!column.on) {
-              event = Tone.Transport.schedule((time) => {
-                synths[action.row].triggerAttackRelease(pitches[action.row], '8n')
-              }, `0:0:${action.column}`)
-              return {
-                ...state,
-                on: true,
-                event: event
+export const melodyGridReducer = (state = initialMelodyGrid, action) => {
+  switch (action.type) {
+    case TOGGLE_MELODY_NOTE:
+      return state.map((row, rowIndex) => {
+        if (rowIndex === action.row) {
+          return row.map((column, columnIndex) => {
+            if (columnIndex === action.column) {
+              let event = null
+              if (!column.on) {
+                event = Tone.Transport.schedule((time) => {
+                  synths[action.row].triggerAttackRelease(pitches[action.row], '8n')
+                }, `0:0:${action.column}`)
+                return {
+                  ...state,
+                  on: true,
+                  event: event
+                }
+              } else {
+                Tone.Transport.clear(column.event)
+                return {
+                  ...state,
+                  event: null
+                }
               }
             } else {
-              Tone.Transport.clear(column.event)
-              return {
-                ...state,
-                event: null
-              }
+              return column
             }
-          } else {
-            return column
+          })
+        } else {
+          return row
+        }
+      })
+    case CLEAR_MELODY_GRID:
+      state.forEach((row) => {
+        row.forEach((column) => {
+          if(column.event !== null) {
+            Tone.Transport.clear(column.event)
           }
         })
-      } else {
-        return row
-      }
-    })
-  } else {
-    return state
+      })
+      return initialMelodyGrid
+    default:
+      return state
   }
 }
