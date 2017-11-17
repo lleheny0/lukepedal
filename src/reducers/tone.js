@@ -12,7 +12,7 @@ Tone.Transport.start()
 
 const synths = []
 for(let i = 0; i < 7; i++) {
-  synths.push(new Tone.Synth().toMaster())
+  synths.push(new Tone.Synth().toMaster().connect(new Tone.Freeverb(0.95).toMaster()))
 }
 
 const initialGrid = []
@@ -69,7 +69,7 @@ export const gridReducer = (state = initialGrid, action) => {
             let event = null
             if (!column.on) {
               event = Tone.Transport.schedule((time) => {
-                synths[action.row].triggerAttackRelease(pitches[action.row], '16n')
+                synths[action.row].triggerAttackRelease(pitches[action.row], '8n')
               }, `0:0:${action.column}`)
               return {
                 ...state,

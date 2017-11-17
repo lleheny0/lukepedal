@@ -18,6 +18,7 @@ class Looper extends Component {
       <div className='looper'>
         <div className='playback-toggle'>
           <button
+            className={ playing ? 'on' : 'off'}
             onClick={ () => togglePlayback() }>
             { playing ? '◼' : '►' }
           </button>

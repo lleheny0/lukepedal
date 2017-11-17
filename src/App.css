@@ -62,10 +62,10 @@ html, body {
   cursor: pointer;
   border-radius: 3px;
   border: none;
-  transform: translateY(-5px);
-  box-shadow: 0 5px #888;
-  background-color: #ccc;
+  transform: translateY(-3px);
   color: #333;
+  box-shadow: 0 3px #666;
+  background-color: #aaa;
 }
 
 .playback-toggle button:active {
