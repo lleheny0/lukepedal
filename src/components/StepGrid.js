@@ -18,11 +18,15 @@ class StepGrid extends Component {
         <tr key={rowIndex}>
           {
             row.map((column, columnIndex) => {
+              let className = 'grid-button '
+              column.on ? className += 'on ' : className += 'off '
+              column.activeColumn ? className += 'active ' : className += ''
+              columnIndex % 4 === 0 ? className += 'beat' : className += ''
               return (
                 <td key={columnIndex}>
                   <button
                     key={`${rowIndex}-${columnIndex}`}
-                    className={column.on ? 'grid-button on' : 'grid-button off'}
+                    className={className}
                     onClick={ () => { toggleNote(rowIndex, columnIndex) } }>
                   </button>
                 </td>

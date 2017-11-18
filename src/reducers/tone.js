@@ -2,17 +2,20 @@ import {
   TOGGLE_PLAYBACK,
   ADJUST_TEMPO,
   TOGGLE_MELODY_NOTE,
-  CLEAR_MELODY_GRID
+  CLEAR_MELODY_GRID,
+  HIGHLIGHT_MELODY_COLUMN
 } from '../actions/actions'
 import Tone from 'tone'
 
+const loopLength = 32
+
 Tone.Transport.loop = true
 Tone.Transport.loopStart = '0'
-Tone.Transport.loopEnd = '1m'
-Tone.Transport.start()
+Tone.Transport.loopEnd = `0:0:${loopLength}`
+Tone.Transport.start('1s')
 
 const synths = []
-const reverb = new Tone.Freeverb(0.85).toMaster()
+const reverb = new Tone.Freeverb(0.75).toMaster()
 for(let i = 0; i < 7; i++) {
   synths.push(new Tone.Synth().toMaster().connect(reverb))
 }
@@ -21,10 +24,11 @@ const initialMelodyGrid = []
 
 for (let i = 0; i < 7; i++) {
   initialMelodyGrid[i] = []
-  for (let j = 0; j < 16; j++) {
+  for (let j = 0; j < loopLength; j++) {
     initialMelodyGrid[i][j] = {
       on: false,
-      event: null
+      event: null,
+      activeColumn: false
     }
   }
 }
@@ -53,7 +57,7 @@ export const playbackReducer = (state = true, action) => {
   }
 }
 
-export const tempoReducer = (state = 120, action) => {
+export const tempoReducer = (state = 90, action) => {
   if (action.type === ADJUST_TEMPO) {
     Tone.Transport.bpm.value = action.tempo
     return action.tempo
@@ -72,19 +76,18 @@ export const melodyGridReducer = (state = initialMelodyGrid, action) => {
               let event = null
               if (!column.on) {
                 event = Tone.Transport.schedule((time) => {
-                  synths[action.row].triggerAttackRelease(pitches[action.row], '8n')
+                  synths[action.row].triggerAttackRelease(pitches[action.row], '16n')
                 }, `0:0:${action.column}`)
-                return {
-                  ...state,
+                return Object.assign({}, column, {
                   on: true,
                   event: event
-                }
+                })
               } else {
                 Tone.Transport.clear(column.event)
-                return {
-                  ...state,
+                return Object.assign({}, column, {
+                  on: false,
                   event: null
-                }
+                })
               }
             } else {
               return column
@@ -103,6 +106,29 @@ export const melodyGridReducer = (state = initialMelodyGrid, action) => {
         })
       })
       return initialMelodyGrid
+    case HIGHLIGHT_MELODY_COLUMN:
+      return state.map((row) => {
+        return row.map((column, columnIndex) => {
+          if(action.column === columnIndex) {
+            return Object.assign({}, column, {
+              activeColumn: true
+            })
+          } else {
+            return Object.assign({}, column, {
+              ...column,
+              activeColumn: false
+            })
+          }
+        })
+      })
+    case TOGGLE_PLAYBACK:
+    return state.map((row) => {
+      return row.map((column, columnIndex) => {
+        return Object.assign({}, column, {
+          activeColumn: false
+        })
+      })
+    })
     default:
       return state
   }

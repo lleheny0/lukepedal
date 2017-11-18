@@ -45,7 +45,7 @@ html, body {
 }
 
 .title {
-  font-size: 36pt;
+  font-size: 24pt;
 }
 
 .playback-toggle {
@@ -101,8 +101,7 @@ html, body {
 }
 
 .grid-button.on {
-  box-shadow: 0 3px #268,
-              0 1.5px 15px #268;
+  box-shadow: 0 3px #268;
   background-color: #8ac;
 }
 
@@ -114,6 +113,15 @@ html, body {
 .grid-button:active, .clear-button:active {
   transform: translateY(0px);
   box-shadow: none;
+}
+
+.grid-button.off.beat {
+  background-color: #aaa;
+}
+
+.grid-button.on.active {
+  background-color: #bdf;
+  box-shadow: 0 1.5px 15px #bdf;
 }
 
 .clear-button {

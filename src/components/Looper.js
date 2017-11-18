@@ -5,16 +5,25 @@ import {
   togglePlayback,
   adjustTempo,
   toggleMelodyNote,
-  clearMelodyGrid
+  clearMelodyGrid,
+  highlightMelodyColumn
 } from '../actions/actions'
 import StepGrid from './StepGrid'
-
+import Tone from 'tone'
 
 class Looper extends Component {
 
-  handleChange(event) {
-    this.setState({tempo: event.target.value})
+  constructor(props) {
+    super(props)
+    Tone.Transport.scheduleRepeat((time) => {
+      let position = parseInt(Tone.Transport.position.split(':')[0]*16, 10) +
+                     parseInt(Tone.Transport.position.split(':')[1]*4, 10) +
+                     parseInt(Tone.Transport.position.split(':')[2], 10)
+      this.props.highlightMelodyColumn(position)
+    }, '0:0:1')
   }
+
+  convertTo
 
   render() {
     let {
@@ -78,7 +87,8 @@ function mapDispatchToProps(dispatch) {
     togglePlayback,
     adjustTempo,
     toggleMelodyNote,
-    clearMelodyGrid
+    clearMelodyGrid,
+    highlightMelodyColumn
   }, dispatch)
 }
 
