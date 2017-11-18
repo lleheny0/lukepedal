@@ -8,10 +8,12 @@ import {
 import Tone from 'tone'
 
 const loopLength = 32
+const initialTempo = 120
 
 Tone.Transport.loop = true
 Tone.Transport.loopStart = '0'
 Tone.Transport.loopEnd = `0:0:${loopLength}`
+Tone.Transport.bpm.value = initialTempo
 Tone.Transport.start('1s')
 
 const synths = []
@@ -57,7 +59,7 @@ export const playbackReducer = (state = true, action) => {
   }
 }
 
-export const tempoReducer = (state = 90, action) => {
+export const tempoReducer = (state = initialTempo, action) => {
   if (action.type === ADJUST_TEMPO) {
     Tone.Transport.bpm.value = action.tempo
     return action.tempo
