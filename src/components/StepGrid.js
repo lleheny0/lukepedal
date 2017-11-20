@@ -39,12 +39,12 @@ class StepGrid extends Component {
 
     return (
       <div className={className}>
-      { clearButton }
         <table>
           <tbody>
             { table }
           </tbody>
         </table>
+        { clearButton }
       </div>
     )
   }

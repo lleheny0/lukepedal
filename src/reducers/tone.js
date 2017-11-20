@@ -1,13 +1,14 @@
 import {
   TOGGLE_PLAYBACK,
   ADJUST_TEMPO,
+  CHANGE_VIEW,
   TOGGLE_MELODY_NOTE,
   CLEAR_MELODY_GRID,
   HIGHLIGHT_MELODY_COLUMN
 } from '../actions/actions'
 import Tone from 'tone'
 
-const loopLength = 32
+const loopLength = 16
 const initialTempo = 120
 
 Tone.Transport.loop = true
@@ -22,9 +23,19 @@ for(let i = 0; i < 7; i++) {
   synths.push(new Tone.Synth().toMaster().connect(reverb))
 }
 
+const melodyPitches = [
+  'C5',
+  'B4',
+  'A4',
+  'G4',
+  'E4',
+  'D4',
+  'C4',
+]
+
 const initialMelodyGrid = []
 
-for (let i = 0; i < 7; i++) {
+for (let i = 0; i < melodyPitches.length; i++) {
   initialMelodyGrid[i] = []
   for (let j = 0; j < loopLength; j++) {
     initialMelodyGrid[i][j] = {
@@ -35,15 +46,27 @@ for (let i = 0; i < 7; i++) {
   }
 }
 
-const pitches = [
-  'C5',
-  'B4',
-  'A4',
-  'G4',
-  'E4',
-  'D4',
-  'C4',
+const bassPitches = [
+  'C3',
+  'D3',
+  'E3',
+  'F3',
+  'G3',
+  'A3',
 ]
+
+const initialBassGrid = []
+
+for (let i = 0; i < bassPitches.length; i++) {
+  initialBassGrid[i] = []
+  for (let j = 0; j < 8; j++) {
+    initialBassGrid[i][j] = {
+      on: false,
+      event: null,
+      activeColumn: false
+    }
+  }
+}
 
 export const playbackReducer = (state = true, action) => {
   if (action.type === TOGGLE_PLAYBACK) {
@@ -68,6 +91,14 @@ export const tempoReducer = (state = initialTempo, action) => {
   }
 }
 
+export const viewReducer = (state = 'melody', action) => {
+  if (action.type === CHANGE_VIEW) {
+    return action.view
+  } else {
+    return state
+  }
+}
+
 export const melodyGridReducer = (state = initialMelodyGrid, action) => {
   switch (action.type) {
     case TOGGLE_MELODY_NOTE:
@@ -78,7 +109,7 @@ export const melodyGridReducer = (state = initialMelodyGrid, action) => {
               let event = null
               if (!column.on) {
                 event = Tone.Transport.schedule((time) => {
-                  synths[action.row].triggerAttackRelease(pitches[action.row], '16n')
+                  synths[action.row].triggerAttackRelease(melodyPitches[action.row], '16n')
                 }, `0:0:${action.column}`)
                 return Object.assign({}, column, {
                   on: true,
@@ -134,4 +165,7 @@ export const melodyGridReducer = (state = initialMelodyGrid, action) => {
     default:
       return state
   }
+}
+
+export const bassReducer = (state = initialBassGrid, action) => {
 }

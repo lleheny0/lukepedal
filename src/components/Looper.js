@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import {
   togglePlayback,
   adjustTempo,
+  changeView,
   toggleMelodyNote,
   clearMelodyGrid,
   highlightMelodyColumn
@@ -29,45 +30,73 @@ class Looper extends Component {
     let {
       playing,
       tempo,
+      view,
       melodyGrid,
       togglePlayback,
       adjustTempo,
+      changeView,
       toggleMelodyNote,
       clearMelodyGrid
     } = this.props
 
+    let visibleGrid
+
+    switch (view) {
+      case 'melody':
+        visibleGrid = <StepGrid
+          grid={melodyGrid}
+          toggleNote={toggleMelodyNote}
+          className='melody-grid grid'
+          clear={clearMelodyGrid}
+        />
+        break
+      default:
+        visibleGrid = <div />
+    }
+
     return (
       <div className='looper'>
-        <div className='playback-toggle'>
+        <div className='header'>
+          <span className='playback-toggle'>
+            <button
+              className={ playing ? 'on' : 'off'}
+              onClick={ () => togglePlayback() }>
+              { playing ? '►' : '❙❙' }
+            </button>
+          </span>
+          <span className='tempo-info'>
+            <span>
+              { `tempo: ${tempo}` }
+            </span>
+            <input
+              type='range'
+              min='30'
+              max='180'
+              className='tempo-slider'
+              value={tempo}
+              onChange={ (event) => { adjustTempo(event.target.value) } }
+            />
+          </span>
+          <span className='title'>
+            { '☻ sequencer' }
+          </span>
+        </div>
+        <div className='view-switcher'>
           <button
-            className={ playing ? 'on' : 'off'}
-            onClick={ () => togglePlayback() }>
-            { playing ? '◼' : '►' }
-          </button>
-        </div>
-        <div className='title'>
-          { '☻ sequencer' }
-        </div>
-        <div className='tempo-info'>
-          { `tempo: ${tempo}` }
-        </div>
-        <div>
-          <input
-            type='range'
-            min='30'
-            max='240'
-            className='tempo-slider'
-            value={tempo}
-            onChange={ (event) => { adjustTempo(event.target.value) } }
+            className='view-button melody-view-button'
+            onClick={ () => changeView('melody') }
+          />
+          <button
+            className='view-button bass-view-button'
+            onClick={ () => changeView('bass') }
+          />
+          <button
+            className='view-button drums-view-button'
+            onClick={ () => changeView('drums') }
           />
         </div>
         <div className='melody-grid-container'>
-          <StepGrid
-            grid={melodyGrid}
-            toggleNote={toggleMelodyNote}
-            className='melody-grid grid'
-            clear={clearMelodyGrid}
-          />
+          { visibleGrid }
         </div>
       </div>
     )
@@ -79,6 +108,7 @@ function mapStateToProps(state) {
     playing: state.playing,
     tempo: state.tempo,
     melodyGrid: state.melodyGrid,
+    view: state.view
   }
 }
 
@@ -86,6 +116,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     togglePlayback,
     adjustTempo,
+    changeView,
     toggleMelodyNote,
     clearMelodyGrid,
     highlightMelodyColumn

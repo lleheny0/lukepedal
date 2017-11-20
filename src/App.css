@@ -40,46 +40,57 @@ html, body {
 }
 
 .looper {
-  padding: 25px;
   margin: auto;
+}
+
+.header {
+  padding: 10px;
+  display: inline-block;
+  width: 100%;
+}
+
+.tempo-info {
+  display: inline;
+  float: left;
+}
+
+.tempo-info span {
+  display: block;
+  width: auto;
 }
 
 .title {
   font-size: 24pt;
+  float: right;
 }
 
 .playback-toggle {
-  position: fixed;
-  left: 50%;
-  margin-left: -25px;
+  position: relative;
 }
 
 .playback-toggle button {
   text-align: center;
   height: 50px;
   width: 60px;
-  font-size: 12pt;
+  font-size: 24pt;
   cursor: pointer;
-  border-radius: 3px;
   border: none;
   transform: translateY(-3px);
-  color: #333;
-  box-shadow: 0 3px #666;
-  background-color: #aaa;
-}
-
-.playback-toggle button:active {
-  transform: translateY(0px);
-  box-shadow: none;
+  color: white;
+  background-color: rgba(0, 0, 0, 0);
 }
 
 .tempo-slider {
-  width: 200px;
+  width: 150px;
   border: solid 2px blue;
   cursor: pointer;
 }
 
 .melody-grid-container {
+  width: max-content;
+  margin: auto;
+  background-color: #282838;
+  border-radius: 5px;
 }
 
 .grid {
@@ -87,10 +98,10 @@ html, body {
 
 .grid table {
   margin: auto;
-  padding: 15px;
+  padding: 10px 7px;
 }
 
-.grid-button, .clear-button {
+.grid-button, .clear-button, .view-button {
   height: 30px;
   width: 25px;
   border: none;
@@ -100,7 +111,7 @@ html, body {
   transform: translateY(-3px);
 }
 
-.grid-button.on {
+.melody-grid .grid-button.on, .melody-view-button {
   box-shadow: 0 3px #268;
   background-color: #8ac;
 }
@@ -110,7 +121,7 @@ html, body {
   background-color: #888;
 }
 
-.grid-button:active, .clear-button:active {
+.grid-button:active, .clear-button:active, .view-button:active {
   transform: translateY(0px);
   box-shadow: none;
 }
@@ -119,9 +130,23 @@ html, body {
   background-color: #aaa;
 }
 
-.grid-button.on.active {
+.melody-grid .grid-button.on.active {
   background-color: #bdf;
-  box-shadow: 0 1.5px 15px #bdf;
+  box-shadow: 0 3px #59b,
+              0 1.5px 15px #bdf;
+}
+
+.view-switcher {
+  width: max-content;
+  margin: auto;
+  text-align: center;
+  background-color: #282838;
+  padding: 15px 7px 0px 7px;
+  border-radius: 7px 7px 0px 0px;
+}
+
+.view-button {
+  margin: 0 4px;
 }
 
 .clear-button {
