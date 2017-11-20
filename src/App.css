@@ -35,7 +35,7 @@
 
 html, body {
   height: 100%;
-  background-color: #223;
+  background-color: #112;
   color: white;
 }
 
@@ -44,9 +44,11 @@ html, body {
 }
 
 .header {
-  padding: 10px;
+  padding: 10px 10px 0px 10px;
+  margin-bottom: 75px;
   display: inline-block;
   width: 100%;
+  background-color: #223;
 }
 
 .tempo-info {
@@ -86,14 +88,17 @@ html, body {
   cursor: pointer;
 }
 
-.melody-grid-container {
+.grid-container {
   width: max-content;
   margin: auto;
-  background-color: #282838;
-  border-radius: 5px;
+  overflow: auto;
+  background-color: #223;
+  border-radius: 3px;
+  box-shadow: 0 10px #181828
 }
 
 .grid {
+  float: left;
 }
 
 .grid table {
@@ -140,18 +145,21 @@ html, body {
   width: max-content;
   margin: auto;
   text-align: center;
-  background-color: #282838;
   padding: 15px 7px 0px 7px;
-  border-radius: 7px 7px 0px 0px;
 }
 
 .view-button {
   margin: 0 4px;
 }
 
+.controls {
+  float: right;
+}
+
 .clear-button {
   font-size: 14pt;
   padding: 0;
+  margin: 15px 10px;
   color: #844;
   text-align: center;
   box-shadow: 0 3px #844;

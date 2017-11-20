@@ -7,7 +7,10 @@ import {
   changeView,
   toggleMelodyNote,
   clearMelodyGrid,
-  highlightMelodyColumn
+  highlightMelodyColumn,
+  toggleBassNote,
+  clearBassGrid,
+  highlightBassColumn
 } from '../actions/actions'
 import StepGrid from './StepGrid'
 import Tone from 'tone'
@@ -32,14 +35,17 @@ class Looper extends Component {
       tempo,
       view,
       melodyGrid,
+      bassGrid,
       togglePlayback,
       adjustTempo,
       changeView,
       toggleMelodyNote,
-      clearMelodyGrid
+      clearMelodyGrid,
+      toggleBassNote,
+      clearBassGrid
     } = this.props
 
-    let visibleGrid
+    let visibleGrid, visibleControls
 
     switch (view) {
       case 'melody':
@@ -47,8 +53,31 @@ class Looper extends Component {
           grid={melodyGrid}
           toggleNote={toggleMelodyNote}
           className='melody-grid grid'
-          clear={clearMelodyGrid}
         />
+        visibleControls =
+        <span className='controls'>
+          <button
+            className='clear-button'
+            onClick={ () => { clearMelodyGrid() } }>
+            ✘
+          </button>
+        </span>
+        break
+      case 'bass':
+        visibleGrid = <StepGrid
+          grid={bassGrid}
+          toggleNote={toggleBassNote}
+          className='bass-grid grid'
+          clear={clearBassGrid}
+        />
+        visibleControls =
+        <span className='controls'>
+          <button
+            className='clear-button'
+            onClick={ () => { clearBassGrid() } }>
+            ✘
+          </button>
+        </span>
         break
       default:
         visibleGrid = <div />
@@ -77,26 +106,28 @@ class Looper extends Component {
               onChange={ (event) => { adjustTempo(event.target.value) } }
             />
           </span>
+          <span className='view-switcher'>
+            <button
+              className='view-button melody-view-button'
+              onClick={ () => changeView('melody') }
+            />
+            <button
+              className='view-button bass-view-button'
+              onClick={ () => changeView('bass') }
+            />
+            <button
+              className='view-button drums-view-button'
+              onClick={ () => changeView('drums') }
+            />
+          </span>
           <span className='title'>
             { '☻ sequencer' }
           </span>
         </div>
-        <div className='view-switcher'>
-          <button
-            className='view-button melody-view-button'
-            onClick={ () => changeView('melody') }
-          />
-          <button
-            className='view-button bass-view-button'
-            onClick={ () => changeView('bass') }
-          />
-          <button
-            className='view-button drums-view-button'
-            onClick={ () => changeView('drums') }
-          />
-        </div>
-        <div className='melody-grid-container'>
+
+        <div className='grid-container'>
           { visibleGrid }
+          { visibleControls }
         </div>
       </div>
     )
@@ -108,6 +139,7 @@ function mapStateToProps(state) {
     playing: state.playing,
     tempo: state.tempo,
     melodyGrid: state.melodyGrid,
+    bassGrid: state.bassGrid,
     view: state.view
   }
 }
@@ -119,7 +151,10 @@ function mapDispatchToProps(dispatch) {
     changeView,
     toggleMelodyNote,
     clearMelodyGrid,
-    highlightMelodyColumn
+    highlightMelodyColumn,
+    toggleBassNote,
+    clearBassGrid,
+    highlightBassColumn
   }, dispatch)
 }
 

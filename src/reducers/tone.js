@@ -167,5 +167,6 @@ export const melodyGridReducer = (state = initialMelodyGrid, action) => {
   }
 }
 
-export const bassReducer = (state = initialBassGrid, action) => {
+export const bassGridReducer = (state = initialBassGrid, action) => {
+  return state
 }

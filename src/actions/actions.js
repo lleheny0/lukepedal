@@ -33,13 +33,13 @@ export const highlightMelodyColumn = (column) => {
 }
 
 export const toggleBassNote = (row, column) => {
-  return { type: TOGGLE_MELODY_NOTE, row, column }
+  return { type: TOGGLE_BASS_NOTE, row, column }
 }
 
 export const clearBassGrid = () => {
-  return { type: CLEAR_MELODY_GRID }
+  return { type: CLEAR_BASS_GRID }
 }
 
 export const highlightBassColumn = (column) => {
-  return { type: HIGHLIGHT_MELODY_COLUMN, column }
+  return { type: HIGHLIGHT_BASS_COLUMN, column }
 }

@@ -3,15 +3,7 @@ import React, { Component } from 'react'
 class StepGrid extends Component {
 
   render() {
-    const { grid, toggleNote, className, clear } = this.props
-
-    const clearButton = (
-      <button
-        className='clear-button'
-        onClick={ () => { clear() } }>
-        ✘
-      </button>
-    )
+    const { grid, toggleNote, className } = this.props
 
     const table = grid.map((row, rowIndex) => {
       return (
@@ -38,14 +30,13 @@ class StepGrid extends Component {
     })
 
     return (
-      <div className={className}>
+      <span className={className}>
         <table>
           <tbody>
             { table }
           </tbody>
         </table>
-        { clearButton }
-      </div>
+      </span>
     )
   }
 }
