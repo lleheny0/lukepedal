@@ -4,24 +4,21 @@ import {
   CHANGE_VIEW,
   TOGGLE_MELODY_NOTE,
   CLEAR_MELODY_GRID,
-  HIGHLIGHT_MELODY_COLUMN
+  HIGHLIGHT_MELODY_COLUMN,
+  TOGGLE_BASS_NOTE,
+  CLEAR_BASS_GRID,
+  HIGHLIGHT_BASS_COLUMN
 } from '../actions/actions'
 import Tone from 'tone'
 
-const loopLength = 16
-const initialTempo = 120
+const loopLength = 128
+const initialTempo = 90
 
 Tone.Transport.loop = true
 Tone.Transport.loopStart = '0'
 Tone.Transport.loopEnd = `0:0:${loopLength}`
 Tone.Transport.bpm.value = initialTempo
 Tone.Transport.start('1s')
-
-const synths = []
-const reverb = new Tone.Freeverb(0.75).toMaster()
-for(let i = 0; i < 7; i++) {
-  synths.push(new Tone.Synth().toMaster().connect(reverb))
-}
 
 const melodyPitches = [
   'C5',
@@ -33,11 +30,16 @@ const melodyPitches = [
   'C4',
 ]
 
-const initialMelodyGrid = []
+const melodySynths = []
+const reverb = new Tone.Freeverb(0.75).toMaster()
+for (let i = 0; i < melodyPitches.length; i++) {
+  melodySynths.push(new Tone.Synth({oscillator: {type: 'sine'}}).toMaster())
+}
 
+const initialMelodyGrid = []
 for (let i = 0; i < melodyPitches.length; i++) {
   initialMelodyGrid[i] = []
-  for (let j = 0; j < loopLength; j++) {
+  for (let j = 0; j < 16; j++) {
     initialMelodyGrid[i][j] = {
       on: false,
       event: null,
@@ -47,16 +49,20 @@ for (let i = 0; i < melodyPitches.length; i++) {
 }
 
 const bassPitches = [
-  'C3',
-  'D3',
-  'E3',
-  'F3',
-  'G3',
-  'A3',
+  'A2',
+  'G2',
+  'F2',
+  'E2',
+  'D2',
+  'C2',
 ]
 
-const initialBassGrid = []
+const bassSynths = []
+for (let i = 0; i < bassPitches.length; i++) {
+  bassSynths.push(new Tone.Synth().toMaster())
+}
 
+const initialBassGrid = []
 for (let i = 0; i < bassPitches.length; i++) {
   initialBassGrid[i] = []
   for (let j = 0; j < 8; j++) {
@@ -106,11 +112,11 @@ export const melodyGridReducer = (state = initialMelodyGrid, action) => {
         if (rowIndex === action.row) {
           return row.map((column, columnIndex) => {
             if (columnIndex === action.column) {
-              let event = null
+              let event
               if (!column.on) {
-                event = Tone.Transport.schedule((time) => {
-                  synths[action.row].triggerAttackRelease(melodyPitches[action.row], '16n')
-                }, `0:0:${action.column}`)
+                event = Tone.Transport.scheduleRepeat((time) => {
+                  melodySynths[action.row].triggerAttackRelease(melodyPitches[action.row], '16n')
+                }, '1m', `0:0:${action.column}`)
                 return Object.assign({}, column, {
                   on: true,
                   event: event
@@ -133,7 +139,7 @@ export const melodyGridReducer = (state = initialMelodyGrid, action) => {
     case CLEAR_MELODY_GRID:
       state.forEach((row) => {
         row.forEach((column) => {
-          if(column.event !== null) {
+          if (column.event) {
             Tone.Transport.clear(column.event)
           }
         })
@@ -142,7 +148,7 @@ export const melodyGridReducer = (state = initialMelodyGrid, action) => {
     case HIGHLIGHT_MELODY_COLUMN:
       return state.map((row) => {
         return row.map((column, columnIndex) => {
-          if(action.column === columnIndex) {
+          if (action.column === columnIndex) {
             return Object.assign({}, column, {
               activeColumn: true
             })
@@ -168,5 +174,84 @@ export const melodyGridReducer = (state = initialMelodyGrid, action) => {
 }
 
 export const bassGridReducer = (state = initialBassGrid, action) => {
-  return state
+  switch (action.type) {
+    case TOGGLE_BASS_NOTE:
+      return state.map((row, rowIndex) => {
+        if (rowIndex === action.row) {
+          return row.map((column, columnIndex) => {
+            if (columnIndex === action.column) {
+              let newColumn, event
+              if (!column.on) {
+                event = Tone.Transport.schedule((time) => {
+                  bassSynths[action.row].triggerAttackRelease(bassPitches[action.row], '1n')
+                }, `0:0:${action.column*16}`)
+                newColumn = Object.assign({}, column, {
+                  on: true,
+                  event: event
+                })
+              } else {
+                Tone.Transport.clear(column.event)
+                newColumn = Object.assign({}, column, {
+                  on: false,
+                  event: null
+                })
+              }
+              return newColumn
+            } else {
+              return column
+            }
+          })
+        } else {
+          return row.map((column, columnIndex) => {
+            if (action.column === columnIndex) {
+              if (column.on) {
+                Tone.Transport.clear(column.event)
+                return Object.assign({}, column, {
+                  on: false,
+                  event: null
+                })
+              } else {
+                return column
+              }
+            } else {
+              return column
+            }
+          })
+        }
+      })
+    case CLEAR_BASS_GRID:
+      state.forEach((row) => {
+        row.forEach((column) => {
+          if (column.event) {
+            Tone.Transport.clear(column.event)
+          }
+        })
+      })
+      return initialBassGrid
+    case HIGHLIGHT_BASS_COLUMN:
+      return state.map((row) => {
+        return row.map((column, columnIndex) => {
+          if (action.column === columnIndex) {
+            return Object.assign({}, column, {
+              activeColumn: true
+            })
+          } else {
+            return Object.assign({}, column, {
+              ...column,
+              activeColumn: false
+            })
+          }
+        })
+      })
+    case TOGGLE_PLAYBACK:
+      return state.map((row) => {
+        return row.map((column, columnIndex) => {
+          return Object.assign({}, column, {
+            activeColumn: false
+          })
+        })
+      })
+    default:
+      return state
+  }
 }

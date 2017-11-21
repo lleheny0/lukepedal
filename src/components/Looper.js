@@ -23,7 +23,8 @@ class Looper extends Component {
       let position = parseInt(Tone.Transport.position.split(':')[0]*16, 10) +
                      parseInt(Tone.Transport.position.split(':')[1]*4, 10) +
                      parseInt(Tone.Transport.position.split(':')[2], 10)
-      this.props.highlightMelodyColumn(position)
+      this.props.highlightMelodyColumn(position%16)
+      this.props.highlightBassColumn(Math.floor(position/16))
     }, '0:0:1')
   }
 

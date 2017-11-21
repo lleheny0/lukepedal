@@ -35,7 +35,7 @@
 
 html, body {
   height: 100%;
-  background-color: #112;
+  background-color: #080810;
   color: white;
 }
 
@@ -94,7 +94,7 @@ html, body {
   overflow: auto;
   background-color: #223;
   border-radius: 3px;
-  box-shadow: 0 10px #181828
+  box-shadow: 0 25px #181828;
 }
 
 .grid {
@@ -121,6 +121,11 @@ html, body {
   background-color: #8ac;
 }
 
+.bass-grid .grid-button.on, .bass-view-button {
+  box-shadow: 0 3px #484;
+  background-color: #9c9;
+}
+
 .grid-button.off {
   box-shadow: 0 3px #444;
   background-color: #888;
@@ -139,6 +144,12 @@ html, body {
   background-color: #bdf;
   box-shadow: 0 3px #59b,
               0 1.5px 15px #bdf;
+}
+
+.bass-grid .grid-button.on.active {
+  background-color: #cfc;
+  box-shadow: 0 3px #7b7,
+              0 1.5px 15px #cfc;
 }
 
 .view-switcher {
