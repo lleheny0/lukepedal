@@ -10,7 +10,10 @@ import {
   highlightMelodyColumn,
   toggleBassNote,
   clearBassGrid,
-  highlightBassColumn
+  highlightBassColumn,
+  toggleDrumNote,
+  clearDrumGrid,
+  highlightDrumColumn
 } from '../actions/actions'
 import StepGrid from './StepGrid'
 import Tone from 'tone'
@@ -25,6 +28,7 @@ class Looper extends Component {
                      parseInt(Tone.Transport.position.split(':')[2], 10)
       this.props.highlightMelodyColumn(position%16)
       this.props.highlightBassColumn(Math.floor(position/16))
+      this.props.highlightDrumColumn(position%16)
     }, '0:0:1')
   }
 
@@ -37,13 +41,16 @@ class Looper extends Component {
       view,
       melodyGrid,
       bassGrid,
+      drumGrid,
       togglePlayback,
       adjustTempo,
       changeView,
       toggleMelodyNote,
       clearMelodyGrid,
       toggleBassNote,
-      clearBassGrid
+      clearBassGrid,
+      toggleDrumNote,
+      clearDrumGrid
     } = this.props
 
     let visibleGrid, visibleControls
@@ -76,6 +83,22 @@ class Looper extends Component {
           <button
             className='clear-button'
             onClick={ () => { clearBassGrid() } }>
+            ✘
+          </button>
+        </span>
+        break
+      case 'drums':
+        visibleGrid = <StepGrid
+          grid={drumGrid}
+          toggleNote={toggleDrumNote}
+          className='drum-grid grid'
+          clear={clearDrumGrid}
+        />
+        visibleControls =
+        <span className='controls'>
+          <button
+            className='clear-button'
+            onClick={ () => { clearDrumGrid() } }>
             ✘
           </button>
         </span>
@@ -141,6 +164,7 @@ function mapStateToProps(state) {
     tempo: state.tempo,
     melodyGrid: state.melodyGrid,
     bassGrid: state.bassGrid,
+    drumGrid: state.drumGrid,
     view: state.view
   }
 }
@@ -155,7 +179,10 @@ function mapDispatchToProps(dispatch) {
     highlightMelodyColumn,
     toggleBassNote,
     clearBassGrid,
-    highlightBassColumn
+    highlightBassColumn,
+    toggleDrumNote,
+    clearDrumGrid,
+    highlightDrumColumn
   }, dispatch)
 }
 

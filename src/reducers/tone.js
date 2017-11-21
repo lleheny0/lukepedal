@@ -7,7 +7,10 @@ import {
   HIGHLIGHT_MELODY_COLUMN,
   TOGGLE_BASS_NOTE,
   CLEAR_BASS_GRID,
-  HIGHLIGHT_BASS_COLUMN
+  HIGHLIGHT_BASS_COLUMN,
+  TOGGLE_DRUM_NOTE,
+  CLEAR_DRUM_GRID,
+  HIGHLIGHT_DRUM_COLUMN
 } from '../actions/actions'
 import Tone from 'tone'
 
@@ -31,7 +34,6 @@ const melodyPitches = [
 ]
 
 const melodySynths = []
-const reverb = new Tone.Freeverb(0.75).toMaster()
 for (let i = 0; i < melodyPitches.length; i++) {
   melodySynths.push(new Tone.Synth({oscillator: {type: 'sine'}}).toMaster())
 }
@@ -67,6 +69,43 @@ for (let i = 0; i < bassPitches.length; i++) {
   initialBassGrid[i] = []
   for (let j = 0; j < 8; j++) {
     initialBassGrid[i][j] = {
+      on: false,
+      event: null,
+      activeColumn: false
+    }
+  }
+}
+
+const bitCrusher = new Tone.BitCrusher(4).toMaster()
+const pitchShift = new Tone.PitchShift(-48).toMaster()
+
+const hatSynth = new Tone.NoiseSynth({
+  volume: -6,
+  envelope: {
+    decay: 0.005
+  }
+}).toMaster()
+const snareSynth = new Tone.NoiseSynth({
+  volume: -6,
+  noise: {
+    type: 'white'
+  },
+  envelope: {
+    decay: 0.1
+  }
+}).toMaster()
+const kickSynth = new Tone.MembraneSynth({
+  volume: 3,
+  envelope: {
+    decay: 2
+  }
+}).toMaster()
+
+const initialDrumGrid = []
+for (let i = 0; i < 3; i++) {
+  initialDrumGrid[i] = []
+  for (let j = 0; j < 16; j++) {
+    initialDrumGrid[i][j] = {
       on: false,
       event: null,
       activeColumn: false
@@ -229,6 +268,92 @@ export const bassGridReducer = (state = initialBassGrid, action) => {
       })
       return initialBassGrid
     case HIGHLIGHT_BASS_COLUMN:
+      return state.map((row) => {
+        return row.map((column, columnIndex) => {
+          if (action.column === columnIndex) {
+            return Object.assign({}, column, {
+              activeColumn: true
+            })
+          } else {
+            return Object.assign({}, column, {
+              ...column,
+              activeColumn: false
+            })
+          }
+        })
+      })
+    case TOGGLE_PLAYBACK:
+      return state.map((row) => {
+        return row.map((column, columnIndex) => {
+          return Object.assign({}, column, {
+            activeColumn: false
+          })
+        })
+      })
+    default:
+      return state
+  }
+}
+
+export const drumGridReducer = (state = initialDrumGrid, action) => {
+  switch (action.type) {
+    case TOGGLE_DRUM_NOTE:
+      return state.map((row, rowIndex) => {
+        if (rowIndex === action.row) {
+          return row.map((column, columnIndex) => {
+            if (columnIndex === action.column) {
+              let event
+              let callback
+              switch (action.row) {
+                case 0:
+                  callback = (time) => {
+                    hatSynth.triggerAttackRelease('16n')
+                  }
+                  break
+                case 1:
+                  callback = (time) => {
+                    snareSynth.triggerAttackRelease('16n')
+                  }
+                  break
+                case 2:
+                  callback = (time) => {
+                    kickSynth.triggerAttackRelease('C0', '16n')
+                  }
+                  break
+                default:
+                  break
+              }
+              if (!column.on) {
+                event = Tone.Transport.scheduleRepeat(callback, '1m', `0:0:${action.column}`)
+                return Object.assign({}, column, {
+                  on: true,
+                  event: event
+                })
+              } else {
+                Tone.Transport.clear(column.event)
+                return Object.assign({}, column, {
+                  on: false,
+                  event: null
+                })
+              }
+            } else {
+              return column
+            }
+          })
+        } else {
+          return row
+        }
+      })
+    case CLEAR_DRUM_GRID:
+      state.forEach((row) => {
+        row.forEach((column) => {
+          if (column.event) {
+            Tone.Transport.clear(column.event)
+          }
+        })
+      })
+      return initialDrumGrid
+    case HIGHLIGHT_DRUM_COLUMN:
       return state.map((row) => {
         return row.map((column, columnIndex) => {
           if (action.column === columnIndex) {

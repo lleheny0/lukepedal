@@ -126,6 +126,11 @@ html, body {
   background-color: #9c9;
 }
 
+.drum-grid .grid-button.on, .drums-view-button {
+  box-shadow: 0 3px #858;
+  background-color: #c9c;
+}
+
 .grid-button.off {
   box-shadow: 0 3px #444;
   background-color: #888;
@@ -142,14 +147,17 @@ html, body {
 
 .melody-grid .grid-button.on.active {
   background-color: #bdf;
-  box-shadow: 0 3px #59b,
-              0 1.5px 15px #bdf;
+  box-shadow: 0 3px #59b;
 }
 
 .bass-grid .grid-button.on.active {
   background-color: #cfc;
-  box-shadow: 0 3px #7b7,
-              0 1.5px 15px #cfc;
+  box-shadow: 0 3px #7b7;
+}
+
+.drum-grid .grid-button.on.active {
+  background-color: #fcf;
+  box-shadow: 0 3px #b7b;
 }
 
 .view-switcher {
