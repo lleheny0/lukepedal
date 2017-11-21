@@ -35,7 +35,10 @@ const melodyPitches = [
 
 const melodySynths = []
 for (let i = 0; i < melodyPitches.length; i++) {
-  melodySynths.push(new Tone.Synth({oscillator: {type: 'sine'}}).toMaster())
+  melodySynths.push(new Tone.Synth({
+    oscillator: {type: 'sine'},
+    volume: -6
+  }).toMaster())
 }
 
 const initialMelodyGrid = []
@@ -61,7 +64,10 @@ const bassPitches = [
 
 const bassSynths = []
 for (let i = 0; i < bassPitches.length; i++) {
-  bassSynths.push(new Tone.Synth().toMaster())
+  bassSynths.push(new Tone.Synth({
+    oscillator: {type: 'sine'},
+    volume: 3
+  }).toMaster())
 }
 
 const initialBassGrid = []
@@ -86,19 +92,15 @@ const hatSynth = new Tone.NoiseSynth({
   }
 }).toMaster()
 const snareSynth = new Tone.NoiseSynth({
-  volume: -6,
-  noise: {
-    type: 'white'
-  },
+  volume: 6,
   envelope: {
     decay: 0.1
   }
 }).toMaster()
+snareSynth.set("noise.type", "pink");
+console.log(snareSynth)
 const kickSynth = new Tone.MembraneSynth({
-  volume: 3,
-  envelope: {
-    decay: 2
-  }
+  volume: 3
 }).toMaster()
 
 const initialDrumGrid = []
@@ -129,6 +131,7 @@ export const playbackReducer = (state = true, action) => {
 
 export const tempoReducer = (state = initialTempo, action) => {
   if (action.type === ADJUST_TEMPO) {
+    console.log(action.tempo)
     Tone.Transport.bpm.value = action.tempo
     return action.tempo
   } else {
