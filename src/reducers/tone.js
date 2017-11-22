@@ -5,9 +5,9 @@ import {
   TOGGLE_MELODY_NOTE,
   CLEAR_MELODY_GRID,
   HIGHLIGHT_MELODY_COLUMN,
-  TOGGLE_BASS_NOTE,
-  CLEAR_BASS_GRID,
-  HIGHLIGHT_BASS_COLUMN,
+  TOGGLE_CHORD,
+  CLEAR_CHORD_GRID,
+  HIGHLIGHT_CHORD,
   TOGGLE_DRUM_NOTE,
   CLEAR_DRUM_GRID,
   HIGHLIGHT_DRUM_COLUMN
@@ -229,9 +229,9 @@ export const melodyGridReducer = (state = initialMelodyGrid, action) => {
   }
 }
 
-export const bassGridReducer = (state = initialBassGrid, action) => {
+export const chordGridReducer = (state = initialBassGrid, action) => {
   switch (action.type) {
-    case TOGGLE_BASS_NOTE:
+    case TOGGLE_CHORD:
       return state.map((row, rowIndex) => {
         if (rowIndex === action.row) {
           return row.map((column, columnIndex) => {
@@ -275,7 +275,7 @@ export const bassGridReducer = (state = initialBassGrid, action) => {
           })
         }
       })
-    case CLEAR_BASS_GRID:
+    case CLEAR_CHORD_GRID:
       state.forEach((row) => {
         row.forEach((column) => {
           if (column.event) {
@@ -284,7 +284,7 @@ export const bassGridReducer = (state = initialBassGrid, action) => {
         })
       })
       return initialBassGrid
-    case HIGHLIGHT_BASS_COLUMN:
+    case HIGHLIGHT_CHORD:
       return state.map((row) => {
         return row.map((column, columnIndex) => {
           if (action.column === columnIndex) {

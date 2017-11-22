@@ -8,9 +8,9 @@ import {
   toggleMelodyNote,
   clearMelodyGrid,
   highlightMelodyColumn,
-  toggleBassNote,
-  clearBassGrid,
-  highlightBassColumn,
+  toggleChord,
+  clearChordGrid,
+  highlightChord,
   toggleDrumNote,
   clearDrumGrid,
   highlightDrumColumn
@@ -27,7 +27,7 @@ class Looper extends Component {
                      parseInt(Tone.Transport.position.split(':')[1]*4, 10) +
                      parseInt(Tone.Transport.position.split(':')[2], 10)
       this.props.highlightMelodyColumn(position%16)
-      this.props.highlightBassColumn(Math.floor(position/16))
+      this.props.highlightChord(Math.floor(position/16))
       this.props.highlightDrumColumn(position%16)
     }, '0:0:1')
   }
@@ -40,15 +40,15 @@ class Looper extends Component {
       tempo,
       view,
       melodyGrid,
-      bassGrid,
+      chordGrid,
       drumGrid,
       togglePlayback,
       adjustTempo,
       changeView,
       toggleMelodyNote,
       clearMelodyGrid,
-      toggleBassNote,
-      clearBassGrid,
+      toggleChord,
+      clearChordGrid,
       toggleDrumNote,
       clearDrumGrid
     } = this.props
@@ -71,18 +71,17 @@ class Looper extends Component {
           </button>
         </span>
         break
-      case 'bass':
+      case 'chord':
         visibleGrid = <StepGrid
-          grid={bassGrid}
-          toggleNote={toggleBassNote}
-          className='bass-grid grid'
-          clear={clearBassGrid}
+          grid={chordGrid}
+          toggleNote={toggleChord}
+          className='chord-grid grid'
         />
         visibleControls =
         <span className='controls'>
           <button
             className='clear-button'
-            onClick={ () => { clearBassGrid() } }>
+            onClick={ () => { clearChordGrid() } }>
             ✘
           </button>
         </span>
@@ -92,7 +91,6 @@ class Looper extends Component {
           grid={drumGrid}
           toggleNote={toggleDrumNote}
           className='drum-grid grid'
-          clear={clearDrumGrid}
         />
         visibleControls =
         <span className='controls'>
@@ -136,8 +134,8 @@ class Looper extends Component {
               onClick={ () => changeView('melody') }
             />
             <button
-              className='view-button bass-view-button'
-              onClick={ () => changeView('bass') }
+              className='view-button chord-view-button'
+              onClick={ () => changeView('chord') }
             />
             <button
               className='view-button drums-view-button'
@@ -163,7 +161,7 @@ function mapStateToProps(state) {
     playing: state.playing,
     tempo: state.tempo,
     melodyGrid: state.melodyGrid,
-    bassGrid: state.bassGrid,
+    chordGrid: state.chordGrid,
     drumGrid: state.drumGrid,
     view: state.view
   }
@@ -177,9 +175,9 @@ function mapDispatchToProps(dispatch) {
     toggleMelodyNote,
     clearMelodyGrid,
     highlightMelodyColumn,
-    toggleBassNote,
-    clearBassGrid,
-    highlightBassColumn,
+    toggleChord,
+    clearChordGrid,
+    highlightChord,
     toggleDrumNote,
     clearDrumGrid,
     highlightDrumColumn

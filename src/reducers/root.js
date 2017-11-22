@@ -3,7 +3,7 @@ import {
   tempoReducer,
   viewReducer,
   melodyGridReducer,
-  bassGridReducer,
+  chordGridReducer,
   drumGridReducer
 } from './tone'
 import { combineReducers } from 'redux'
@@ -13,7 +13,7 @@ const reducer = combineReducers({
   tempo: tempoReducer,
   view: viewReducer,
   melodyGrid: melodyGridReducer,
-  bassGrid: bassGridReducer,
+  chordGrid: chordGridReducer,
   drumGrid: drumGridReducer
 })
 

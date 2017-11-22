@@ -93,7 +93,7 @@ html, body {
   margin: auto;
   overflow: auto;
   background-color: #223;
-  border-radius: 3px;
+  border-radius: 5px;
   box-shadow: 0 25px #181828;
 }
 
@@ -121,7 +121,7 @@ html, body {
   background-color: #8ac;
 }
 
-.bass-grid .grid-button.on, .bass-view-button {
+.chord-grid .grid-button.on, .chord-view-button {
   box-shadow: 0 3px #484;
   background-color: #9c9;
 }
@@ -136,9 +136,13 @@ html, body {
   background-color: #888;
 }
 
-.grid-button:active, .grid-button.on:active, .clear-button:active, .view-button:active {
+.grid-button:active, .clear-button:active, .view-button:active {
   transform: translateY(0px);
   box-shadow: none;
+}
+
+.grid-button.on.active:active {
+  background-color: black;
 }
 
 .grid-button.off.beat {
@@ -150,7 +154,7 @@ html, body {
   box-shadow: 0 3px #59b;
 }
 
-.bass-grid .grid-button.on.active {
+.chord-grid .grid-button.on.active {
   background-color: #cfc;
   box-shadow: 0 3px #7b7;
 }
@@ -158,6 +162,11 @@ html, body {
 .drum-grid .grid-button.on.active {
   background-color: #fcf;
   box-shadow: 0 3px #b7b;
+}
+
+.grid-button.on:active, .grid-button.on.active:active {
+  transform: translateY(0px);
+  box-shadow: none;
 }
 
 .view-switcher {
