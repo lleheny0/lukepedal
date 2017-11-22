@@ -136,7 +136,7 @@ html, body {
   background-color: #888;
 }
 
-.grid-button:active, .clear-button:active, .view-button:active {
+.grid-button:active, .grid-button.on:active, .clear-button:active, .view-button:active {
   transform: translateY(0px);
   box-shadow: none;
 }

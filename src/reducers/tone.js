@@ -37,7 +37,7 @@ const melodySynths = []
 for (let i = 0; i < melodyPitches.length; i++) {
   melodySynths.push(new Tone.Synth({
     oscillator: {type: 'sine'},
-    volume: -6
+    volume: -15
   }).toMaster())
 }
 
@@ -66,7 +66,7 @@ const bassSynths = []
 for (let i = 0; i < bassPitches.length; i++) {
   bassSynths.push(new Tone.Synth({
     oscillator: {type: 'sine'},
-    volume: 3
+    volume: -9
   }).toMaster())
 }
 
@@ -82,29 +82,43 @@ for (let i = 0; i < bassPitches.length; i++) {
   }
 }
 
-const bitCrusher = new Tone.BitCrusher(4).toMaster()
-const pitchShift = new Tone.PitchShift(-48).toMaster()
-
 const hatSynth = new Tone.NoiseSynth({
-  volume: -6,
+  volume: -24,
   envelope: {
-    decay: 0.005
+    decay: 0.05
   }
 }).toMaster()
-const snareSynth = new Tone.NoiseSynth({
-  volume: 6,
+
+const snareSynth1 = new Tone.NoiseSynth({
+  volume: -24,
+  envelope: {
+    decay: '8n'
+  }
+}).toMaster()
+snareSynth1.set("noise.type", "white");
+
+const snareSynth2 = new Tone.NoiseSynth({
+  volume: -6,
   envelope: {
     decay: 0.1
   }
 }).toMaster()
-snareSynth.set("noise.type", "pink");
-console.log(snareSynth)
+snareSynth2.set("noise.type", "pink");
+
+const snareSynth3 = new Tone.NoiseSynth({
+  volume: 0,
+  envelope: {
+    decay: 0.2
+  }
+}).toMaster()
+snareSynth3.set("noise.type", "brown");
+
 const kickSynth = new Tone.MembraneSynth({
-  volume: 3
+  volume: -3
 }).toMaster()
 
 const initialDrumGrid = []
-for (let i = 0; i < 3; i++) {
+for (let i = 0; i < 5; i++) {
   initialDrumGrid[i] = []
   for (let j = 0; j < 16; j++) {
     initialDrumGrid[i][j] = {
@@ -315,10 +329,20 @@ export const drumGridReducer = (state = initialDrumGrid, action) => {
                   break
                 case 1:
                   callback = (time) => {
-                    snareSynth.triggerAttackRelease('16n')
+                    snareSynth1.triggerAttackRelease('16n')
                   }
                   break
                 case 2:
+                  callback = (time) => {
+                    snareSynth2.triggerAttackRelease('16n')
+                  }
+                  break
+                case 3:
+                  callback = (time) => {
+                    snareSynth3.triggerAttackRelease('16n')
+                  }
+                  break
+                case 4:
                   callback = (time) => {
                     kickSynth.triggerAttackRelease('C0', '16n')
                   }
