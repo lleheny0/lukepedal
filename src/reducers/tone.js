@@ -13,33 +13,18 @@ import {
   HIGHLIGHT_DRUM_COLUMN
 } from '../actions/actions'
 import Tone from 'tone'
-
-const loopLength = 128
-const initialTempo = 90
-
-Tone.Transport.loop = true
-Tone.Transport.loopStart = '0'
-Tone.Transport.loopEnd = `0:0:${loopLength}`
-Tone.Transport.bpm.value = initialTempo
-Tone.Transport.start('1s')
-
-const melodyPitches = [
-  'C5',
-  'B4',
-  'A4',
-  'G4',
-  'E4',
-  'D4',
-  'C4',
-]
-
-const melodySynths = []
-for (let i = 0; i < melodyPitches.length; i++) {
-  melodySynths.push(new Tone.Synth({
-    oscillator: {type: 'sine'},
-    volume: -15
-  }).toMaster())
-}
+import {
+  initialTempo,
+  melodyPitches,
+  bassPitches,
+  melodySynths,
+  bassSynths,
+  hatSynth1,
+  hatSynth2,
+  snareSynth1,
+  snareSynth2,
+  kickSynth
+} from '../utils/tone'
 
 const initialMelodyGrid = []
 for (let i = 0; i < melodyPitches.length; i++) {
@@ -53,23 +38,6 @@ for (let i = 0; i < melodyPitches.length; i++) {
   }
 }
 
-const bassPitches = [
-  'A2',
-  'G2',
-  'F2',
-  'E2',
-  'D2',
-  'C2',
-]
-
-const bassSynths = []
-for (let i = 0; i < bassPitches.length; i++) {
-  bassSynths.push(new Tone.Synth({
-    oscillator: {type: 'sine'},
-    volume: -9
-  }).toMaster())
-}
-
 const initialBassGrid = []
 for (let i = 0; i < bassPitches.length; i++) {
   initialBassGrid[i] = []
@@ -81,41 +49,6 @@ for (let i = 0; i < bassPitches.length; i++) {
     }
   }
 }
-
-const hatSynth = new Tone.NoiseSynth({
-  volume: -24,
-  envelope: {
-    decay: 0.05
-  }
-}).toMaster()
-
-const snareSynth1 = new Tone.NoiseSynth({
-  volume: -24,
-  envelope: {
-    decay: '8n'
-  }
-}).toMaster()
-snareSynth1.set("noise.type", "white");
-
-const snareSynth2 = new Tone.NoiseSynth({
-  volume: -6,
-  envelope: {
-    decay: 0.1
-  }
-}).toMaster()
-snareSynth2.set("noise.type", "pink");
-
-const snareSynth3 = new Tone.NoiseSynth({
-  volume: 0,
-  envelope: {
-    decay: 0.2
-  }
-}).toMaster()
-snareSynth3.set("noise.type", "brown");
-
-const kickSynth = new Tone.MembraneSynth({
-  volume: -3
-}).toMaster()
 
 const initialDrumGrid = []
 for (let i = 0; i < 5; i++) {
@@ -145,7 +78,6 @@ export const playbackReducer = (state = true, action) => {
 
 export const tempoReducer = (state = initialTempo, action) => {
   if (action.type === ADJUST_TEMPO) {
-    console.log(action.tempo)
     Tone.Transport.bpm.value = action.tempo
     return action.tempo
   } else {
@@ -323,29 +255,19 @@ export const drumGridReducer = (state = initialDrumGrid, action) => {
               let callback
               switch (action.row) {
                 case 0:
-                  callback = (time) => {
-                    hatSynth.triggerAttackRelease('16n')
-                  }
+                  callback = (time) => { hatSynth1.triggerAttackRelease('16n') }
                   break
                 case 1:
-                  callback = (time) => {
-                    snareSynth1.triggerAttackRelease('16n')
-                  }
+                  callback = (time) => { hatSynth2.triggerAttackRelease('16n') }
                   break
                 case 2:
-                  callback = (time) => {
-                    snareSynth2.triggerAttackRelease('16n')
-                  }
+                  callback = (time) => { snareSynth1.triggerAttackRelease('16n') }
                   break
                 case 3:
-                  callback = (time) => {
-                    snareSynth3.triggerAttackRelease('16n')
-                  }
+                  callback = (time) => { snareSynth2.triggerAttackRelease('16n') }
                   break
                 case 4:
-                  callback = (time) => {
-                    kickSynth.triggerAttackRelease('C0', '16n')
-                  }
+                  callback = (time) => { kickSynth.triggerAttackRelease('C0', '16n') }
                   break
                 default:
                   break

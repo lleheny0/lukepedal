@@ -5,6 +5,9 @@ import rootReducer from './reducers/root'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import './App.css';
+import { init } from './utils/tone'
+
+init()
 
 const store = createStore(
   rootReducer
