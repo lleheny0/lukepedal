@@ -84,7 +84,6 @@ html, body {
 
 .tempo-slider {
   width: 150px;
-  border: solid 2px blue;
   cursor: pointer;
 }
 

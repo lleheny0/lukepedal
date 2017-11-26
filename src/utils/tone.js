@@ -4,7 +4,6 @@ export const loopLength = 128
 export const initialTempo = 90
 
 export const melodyPitches = [ 'C5', 'B4', 'A4', 'G4', 'E4', 'D4', 'C4' ]
-
 export const bassPitches = [ 'A2', 'G2', 'F2', 'E2', 'D2', 'C2' ]
 
 const melodySynths = []
