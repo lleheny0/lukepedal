@@ -12,7 +12,7 @@ export const Sequencer = () => {
   const [isDragging, setIsDragging] = useState(false)
 
   return (
-    <div className="flex flex-col justify-between items-center gap-4 m-16 w-256 bg-gray-800 rounded-xl shadow-[0_1rem_0_0_rgba(255,255,255,0.025)] p-4 select-none">
+    <div className="flex flex-col justify-between items-center gap-4 m-16 w-256 bg-gray-800 rounded-xl shadow-[0_1.5rem_0_0_rgba(255,255,255,0.025)] p-4 select-none">
       <Controls />
       <div
         className="grid grid-cols-16 gap-2 w-full h-full"
