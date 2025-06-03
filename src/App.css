@@ -10,4 +10,5 @@
 }
 * {
   font-family: "Calculator", sans-serif;
+  box-sizing: border-box;
 }

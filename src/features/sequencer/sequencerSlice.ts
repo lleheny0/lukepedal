@@ -18,7 +18,7 @@ type NoteUpdateType = {
 }
 
 const initialState: SequencerType = {
-  grid: Array.from({ length: 8 }, (_, pitch) =>
+  grid: Array.from({ length: 6 }, (_, pitch) =>
     Array.from({ length: 16 }, (_, step) => ({
       isActive: false,
       pitch,
@@ -41,17 +41,21 @@ export const sequencerSlice = createAppSlice({
     // Use the `PayloadAction` type to declare the contents of `action.payload`
     toggleNote: create.reducer(
       (state, action: PayloadAction<NoteUpdateType>) => {
-        console.log(action.payload)
         state.grid[action.payload.pitch][action.payload.step].isActive =
           !state.grid[action.payload.pitch][action.payload.step].isActive
       },
     ),
+    setTempo: create.reducer((state, action: PayloadAction<number>) => {
+      state.tempo = action.payload
+    }),
   }),
   selectors: {
     selectGrid: state => state.grid,
     selectIsPlaying: state => state.isPlaying,
+    selectTempo: state => state.tempo,
   },
 })
 
-export const { togglePlayback, toggleNote } = sequencerSlice.actions
-export const { selectGrid, selectIsPlaying } = sequencerSlice.selectors
+export const { togglePlayback, toggleNote, setTempo } = sequencerSlice.actions
+export const { selectGrid, selectIsPlaying, selectTempo } =
+  sequencerSlice.selectors

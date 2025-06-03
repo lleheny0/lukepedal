@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { selectIsPlaying, togglePlayback } from "./sequencerSlice"
+import { TempoBox } from "./Tempo"
 
 export const Controls = () => {
   const dispatch = useAppDispatch()
@@ -13,11 +14,7 @@ export const Controls = () => {
       >
         {isPlaying ? "Pause" : "Play"}
       </button>
-      <div className="flex items-center">
-        Tempo:
-        <input type="range" className="mx-4 w-32" />
-        <span>120 BPM</span>
-      </div>
+      <TempoBox />
       <div className="flex items-center">
         Volume:
         <input type="range" className="mx-4 w-32" />
