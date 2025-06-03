@@ -48,14 +48,19 @@ export const sequencerSlice = createAppSlice({
     setTempo: create.reducer((state, action: PayloadAction<number>) => {
       state.tempo = action.payload
     }),
+    setVolume: create.reducer(state => {
+      state.volume = (state.volume + 25) % 125
+    }),
   }),
   selectors: {
     selectGrid: state => state.grid,
-    selectIsPlaying: state => state.isPlaying,
+    selectPlayback: state => state.isPlaying,
     selectTempo: state => state.tempo,
+    selectVolume: state => state.volume,
   },
 })
 
-export const { togglePlayback, toggleNote, setTempo } = sequencerSlice.actions
-export const { selectGrid, selectIsPlaying, selectTempo } =
+export const { togglePlayback, toggleNote, setTempo, setVolume } =
+  sequencerSlice.actions
+export const { selectGrid, selectPlayback, selectTempo, selectVolume } =
   sequencerSlice.selectors

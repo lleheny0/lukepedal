@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react"
-import { useAppSelector, useAppDispatch } from "../../app/hooks"
-import { selectTempo, setTempo } from "./sequencerSlice"
+import { useAppSelector, useAppDispatch } from "../../../app/hooks"
+import { selectTempo, setTempo } from "../sequencerSlice"
 
 export const TempoBox = () => {
   const dispatch = useAppDispatch()

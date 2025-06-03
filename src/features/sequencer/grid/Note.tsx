@@ -14,8 +14,8 @@ export const Note = ({
   onMouseEnter,
 }: NoteProps) => {
   const conditionalStyles = isActive
-    ? "bg-blue-500 hover:bg-blue-400 active:bg-blue-300 shadow-[0px_0px_0.5rem_rgba(0,128,255,1)]"
-    : "bg-gray-700 hover:bg-gray-600 active:bg-gray-500"
+    ? "bg-blue-500 hover:bg-blue-400 shadow-[0px_0px_0.5rem_rgba(0,128,255,1)]"
+    : "bg-gray-700 hover:bg-gray-600 "
 
   return (
     <div
@@ -30,7 +30,7 @@ export const Note = ({
         transition-colors
         ${conditionalStyles}
       `}
-      onClick={handleToggle}
+      onMouseDown={handleToggle}
       onMouseEnter={onMouseEnter}
     />
   )
